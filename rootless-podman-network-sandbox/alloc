@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eux
+
+ID="$1"
+NET="$2"
+
+dir="/run/sb/${ID}"
+mkdir -p "${dir}/attached"
+
+unshare -n sleep infinity &
+pid="$!"
+
+echo "${pid}" >"${dir}/pid"
+nsenter -t "${pid}" -n ip link set lo up
+cnitool add "${NET}" "/proc/${pid}/ns/net" >"${dir}/attached/${NET}"
+
+# return the result
+echo "/proc/${pid}/ns/net"
