@@ -53,16 +53,14 @@ $ podman run -it --network=ns:/proc/46902/ns/net --dns 10.88.2.1 --hostname bana
        valid_lft forever preferred_lft forever
     inet6 fe80::3c91:aeff:fe1a:52cb/64 scope link 
        valid_lft forever preferred_lft forever
-/ # ping -c 1 10.88.2.2
-PING 10.88.2.2 (10.88.2.2): 56 data bytes
-64 bytes from 10.88.2.2: seq=0 ttl=64 time=0.104 ms
+/ # ping -c 1 apple.dns.podman
+PING apple.dns.podman (10.88.2.2): 56 data bytes
+64 bytes from 10.88.2.2: seq=0 ttl=64 time=0.053 ms
 
---- 10.88.2.2 ping statistics ---
+--- apple.dns.podman ping statistics ---
 1 packets transmitted, 1 packets received, 0% packet loss
-round-trip min/avg/max = 0.104/0.104/0.104 ms
+round-trip min/avg/max = 0.053/0.053/0.053 ms
 ```
-
-TODO: Allow looking up container hostnames
 
 ## Q. What about Rootless Docker?
 

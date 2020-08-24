@@ -12,6 +12,8 @@ pid="$!"
 
 echo "${pid}" >"${dir}/pid"
 nsenter -t "${pid}" -n ip link set lo up
+CNI_ARGS="IgnoreUnknown=1;K8S_POD_NAME=${ID}"
+export CNI_ARGS
 cnitool add "${NET}" "/proc/${pid}/ns/net" >"${dir}/attached/${NET}"
 
 # return the result
