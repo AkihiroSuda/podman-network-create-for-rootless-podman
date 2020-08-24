@@ -13,7 +13,7 @@ cnitool del "${NET}" "/proc/${pid}/ns/net"
 rm -f "${dir}/attached/${NET}"
 
 nwcount=$(find "${dir}/attached" -type f | wc -l)
-if [ -z "${nwcount}" ]; then
+if [ "${nwcount}" = 0 ]; then
 	kill -9 "${pid}"
 	rm -rf "${dir}"
 fi
