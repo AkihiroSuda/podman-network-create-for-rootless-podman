@@ -7,16 +7,22 @@ NET="$2"
 dir="/run/sb/${ID}"
 mkdir -p "${dir}/attached"
 
-unshare -n sleep infinity &
-pid="$!"
-
-echo "${pid}" >"${dir}/pid"
-nsenter -t "${pid}" -n ip link set lo up
+pid=""
+if [ -f "${dir}/pid" ]; then
+	pid=$(cat "${dir}/pid")
+else
+	unshare -n sleep infinity &
+	pid="$!"
+	echo "${pid}" >"${dir}/pid"
+	nsenter -t "${pid}" -n ip link set lo up
+fi
 CNI_ARGS="IgnoreUnknown=1;K8S_POD_NAME=${ID}"
-export CNI_ARGS
+nwcount=$(find "${dir}/attached" -type f | wc -l)
+CNI_IFNAME="eth${nwcount}"
+export CNI_ARGS CNI_IFNAME
 cnitool add "${NET}" "/proc/${pid}/ns/net" >"${dir}/attached/${NET}"
 
 # return the result
 ns="/proc/${pid}/ns/net"
-dns="$(jq -r ".dns.nameservers[0]" < "${dir}/attached/${NET}")"
+dns="$(jq -r ".dns.nameservers[0]" <"${dir}/attached/${NET}")"
 echo "{\"ns\":\"${ns}\",\"dns\":\"${dns}\"}"
