@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eux
+set -eu
 
 ID=$1
 NET=$2
@@ -17,3 +17,6 @@ if [ "${nwcount}" = 0 ]; then
 	kill -9 "${pid}"
 	rm -rf "${dir}"
 fi
+
+# return empty json
+echo "{}"

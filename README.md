@@ -16,7 +16,7 @@ $ podman run -d --name rootless-podman-network-sandbox --pid=host --privileged -
 Create "apple" container with the network "foo" (10.88.2.0/24, defined in [`etc_cni_net.d/foo.conflist`](./etc_cni_net.d/foo.conflist)):
 ```console
 $ podman exec rootless-podman-network-sandbox /alloc apple foo
-/proc/46797/ns/net
+{"ns":"/proc/46797/ns/net","dns":"10.88.2.1"}
 
 $ podman run -it --network=ns:/proc/46797/ns/net --dns 10.88.2.1 --hostname apple --name apple alpine
 / # ip a
@@ -37,7 +37,7 @@ $ podman run -it --network=ns:/proc/46797/ns/net --dns 10.88.2.1 --hostname appl
 Create "banana" container with the same network:
 ```console
 $ podman exec rootless-podman-network-sandbox /alloc banana foo
-/proc/46902/ns/net
+{"ns":"/proc/46902/ns/net","dns":"10.88.2.1"}
 
 $ podman run -it --network=ns:/proc/46902/ns/net --dns 10.88.2.1 --hostname banana --name banana alpine
 / # ip a

@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eux
+set -eu
 
 ID="$1"
 NET="$2"
@@ -17,4 +17,6 @@ export CNI_ARGS
 cnitool add "${NET}" "/proc/${pid}/ns/net" >"${dir}/attached/${NET}"
 
 # return the result
-echo "/proc/${pid}/ns/net"
+ns="/proc/${pid}/ns/net"
+dns="$(jq -r ".dns.nameservers[0]" < "${dir}/attached/${NET}")"
+echo "{\"ns\":\"${ns}\",\"dns\":\"${dns}\"}"

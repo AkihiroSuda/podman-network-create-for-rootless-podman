@@ -23,7 +23,7 @@ RUN git checkout ${DNSNAME_VERSION}
 RUN go build -o /dnsname ./plugins/meta/dnsname
 
 FROM alpine:${ALPINE_VERSION}
-RUN apk add --no-cache curl dnsmasq iptables ip6tables iproute2
+RUN apk add --no-cache curl dnsmasq iptables ip6tables iproute2 jq
 ARG TARGETARCH
 ARG CNI_PLUGINS_VERSION
 RUN mkdir -p /opt/cni/bin && \
