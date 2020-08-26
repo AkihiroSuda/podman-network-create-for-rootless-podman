@@ -3,6 +3,10 @@ set -eu
 
 ID="$1"
 NET="$2"
+K8S_POD_NAME="$ID"
+if [ "$#" -gt 2 ]; then
+  K8S_POD_NAME="$3"
+fi
 
 dir="/run/sb/${ID}"
 mkdir -p "${dir}/attached"
@@ -16,7 +20,7 @@ else
 	echo "${pid}" >"${dir}/pid"
 	nsenter -t "${pid}" -n ip link set lo up
 fi
-CNI_ARGS="IgnoreUnknown=1;K8S_POD_NAME=${ID}"
+CNI_ARGS="IgnoreUnknown=1;K8S_POD_NAME=${K8S_POD_NAME}"
 nwcount=$(find "${dir}/attached" -type f | wc -l)
 CNI_IFNAME="eth${nwcount}"
 export CNI_ARGS CNI_IFNAME
