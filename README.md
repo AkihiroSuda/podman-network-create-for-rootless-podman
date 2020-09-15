@@ -1,8 +1,10 @@
+# UPDATE: This work has been merged to [Podman 2.1](https://github.com/containers/podman/pull/7460)
+
+---
+
 # `podman network create` for Rootless Podman
 
 POC scripts for allowing an equivalent of `podman network create` with Rootless Podman.
-
-Will be proposed to the Podman upstream if everything goes well.
 
 ## Usage
 
